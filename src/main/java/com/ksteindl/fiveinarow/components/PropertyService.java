@@ -46,9 +46,9 @@ public class PropertyService {
         Properties businessLogicProperties = getBundledProperties("/business-logic.properties");
         Properties defaultProperties = getBundledProperties("/default-fiar.properties");
         Properties customProperties = getCustomProperties();
-        loadIntProperties(businessLogicProperties, false);
-        loadIntProperties(defaultProperties, false);
-        loadIntProperties(customProperties, true);
+        loadBundledIntProperties(businessLogicProperties);
+        loadBundledIntProperties(defaultProperties);
+        loadCustomIntProperties(customProperties);
         return overloadProperties(businessLogicProperties, defaultProperties, customProperties);
     }
 
@@ -81,16 +81,33 @@ public class PropertyService {
         return customProperties;
     }
 
-    private void loadIntProperties(Properties properties, boolean logWhenParsingFailed) {
+    private void loadCustomIntProperties(Properties properties) {
+        for (String key : properties.stringPropertyNames()) {
+            try {
+                Integer intValue = Integer.parseInt(properties.getProperty(key));
+                if (key.equals("tableHeight") || key.equals("tableWidth")) {
+                    int maxDimension = intProperties.get("maxDimension");
+                    if (intValue <= maxDimension) {
+                        intProperties.put(key, intValue);
+                    } else {
+                        logger.error(String.format("%s should be maximum %s, falling back to default (%s)", key, maxDimension, intProperties.get(key)));
+                    }
+                } else {
+                    intProperties.put(key, intValue);
+                }
+            } catch (NumberFormatException exception) {
+                logger.info(String.format("For key %s, value %s can not be parsed to int.", key, properties.getProperty(key)));
+            }
+        }
+    }
+
+    private void loadBundledIntProperties(Properties properties) {
         for (String key : properties.stringPropertyNames()) {
             try {
                 Integer intValue = Integer.parseInt(properties.getProperty(key));
                 intProperties.put(key, intValue);
             } catch (NumberFormatException exception) {
-                if (logWhenParsingFailed) {
-                    logger.info(String.format("For key %s, value %s can not be parsed to int.", key, properties.getProperty(key)));
-                }
-
+                logger.trace("Automatic attempt failed to parse value to int");
             }
         }
     }

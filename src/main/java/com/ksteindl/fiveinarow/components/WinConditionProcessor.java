@@ -87,7 +87,8 @@ public class WinConditionProcessor {
     }
 
     private int whoWonDiagonallyLeftDownRightUp(int[][] board) {
-        for (int startColumn = 1; startColumn < board[0].length; startColumn++) {
+        int minDimension = Math.min(board.length, board[0].length);
+        for (int startColumn = 1; startColumn < minDimension; startColumn++) {
             Accumulator accumulator = new Accumulator();
             for (int i = 0; i < startColumn; i++) {
                 accumulator.acc(board[i + 1][startColumn - i]);
@@ -96,9 +97,9 @@ public class WinConditionProcessor {
                 }
             }
         }
-        for (int startRow = 1; startRow < board.length; startRow++) {
+        for (int startRow = 1; startRow < minDimension; startRow++) {
             Accumulator accumulator = new Accumulator();
-            for (int i = 0; i < board[0].length - startRow; i++) {
+            for (int i = 0; i < minDimension - startRow; i++) {
                 accumulator.acc(board[i + startRow][board[0].length - 1- i]);
                 if (accumulator.getScore() >= scoreForWinning ) {
                     return accumulator.getPlayer();
@@ -109,7 +110,8 @@ public class WinConditionProcessor {
     }
 
     private int whoWonDiagonallyLeftUpRightDown(int[][] board) {
-        for (int startColumn = 1; startColumn < board[0].length; startColumn++) {
+        int minDimension = Math.min(board.length, board[0].length);
+        for (int startColumn = 1; startColumn < minDimension; startColumn++) {
             Accumulator accumulator = new Accumulator();
             for (int i = 0; i < startColumn; i++) {
                 accumulator.acc(board[board.length - 1 - i][startColumn - i]);
@@ -118,7 +120,7 @@ public class WinConditionProcessor {
                 }
             }
         }
-        for (int startRow = 1; startRow < board.length; startRow++) {
+        for (int startRow = 1; startRow < minDimension; startRow++) {
             Accumulator accumulator = new Accumulator();
             for (int i = 0; i < startRow; i++) {
                 accumulator.acc(board[startRow - i][board[0].length - 1 - i]);
