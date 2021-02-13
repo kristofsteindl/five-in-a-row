@@ -1,4 +1,6 @@
 /saves
+out/
+logs/
 
 # Compiled class file
 *.class
@@ -78,7 +80,7 @@ cmake-build-*/
 *.iws
 
 # IntelliJ
-out/
+
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -140,5 +142,17 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+/*.iml
+/.apt_generated
+/.classpath
+/.factorypath
+/.gradle
+/.idea
+/.nb-gradle
+/.project
+/.settings
+
+/data/
 
 # End of https://www.toptal.com/developers/gitignore/api/netbeans,intellij

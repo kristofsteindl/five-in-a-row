@@ -1,5 +1,5 @@
 
-package com.steindl.kristof;
+package com.ksteindl.fiveinarow.model;
 
 /**
  *
